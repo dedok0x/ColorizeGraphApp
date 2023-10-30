@@ -137,12 +137,13 @@ class App(customtkinter.CTk):
     def connect_btn_click(self):
         v1 = self.connect_entry.get()
         v2 = self.connect_with_entry.get()
-        if (v1, v2) in list(self.my_frame.graph):
+        vertex_names = self.my_frame.graph.keys()
+        if v1 in vertex_names and v2 in vertex_names:
+            self.my_frame.add_edge(v1, v2)
+        else:
             self.my_frame.label1.configure(text="Ошибка ввода. Поля пустые, либо не соответсвуют существующим вершинам",
                                            font=("Arial", 14, "bold"), text_color="red")
             self.my_frame.label2.configure(text="")
-        else:
-            self.my_frame.add_edge(v1, v2)
 
     def colorize_graph(self):
         self.my_frame.colorize()
