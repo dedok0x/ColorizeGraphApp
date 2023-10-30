@@ -1,5 +1,4 @@
 import customtkinter
-import tkinter
 
 colors = ["white", "red", "orange", "yellow", "green", "blue", "purple", "brown"]
 colors = {i: colors[i] for i in range(len(colors))}
@@ -47,15 +46,16 @@ class GraphFrame(customtkinter.CTkFrame):
         self.edges = []
         self.label1.configure(text=self.graph)
 
-    def add_vertex(self, event):
+    def add_vertex(self, event, connect_entry, connect_with_entry):
         vertex_name = chr(65 + len(self.graph))  # преобразуем номер вершины в символ латинского алфавита
         self.vertices[vertex_name] = Vertex(vertex_name, event.x, event.y)
         self.draw_vertex(self.vertices[vertex_name])
         self.graph[self.vertices[vertex_name].name] = []  # добавляем новую вершину в список связности
-
         self.field.unbind("<Button-1>")
         self.label1.configure(text=f"Граф: {self.graph}", font=("Arial", 14), text_color="white")
         self.label2.configure(text=f"Цвета: {self.color_map}", font=("Arial", 14), text_color="white")
+        connect_entry.configure(values=self.graph.keys())
+        connect_with_entry.configure(values=self.graph.keys())
 
     def add_edge(self, v1, v2):
         if (v1, v2 in self.graph.keys()) and (v2 not in self.graph[v1]):
@@ -130,10 +130,9 @@ class App(customtkinter.CTk):
         self.clear_btn.grid(row=5, column=0, pady=5, sticky="ew", columnspan=2)
 
     def add_btn_click(self):
-
         self.my_frame.label1.configure(text="Чтобы добавить вершину нажмите на поле", font=("Arial", 16, "bold"), text_color="yellow")
         self.my_frame.label2.configure(text="")
-        self.my_frame.field.bind("<Button-1>", lambda event: self.my_frame.add_vertex(event))
+        self.my_frame.field.bind("<Button-1>", lambda event: self.my_frame.add_vertex(event, self.connect_entry, self.connect_with_entry))
 
     def connect_btn_click(self):
         v1 = self.connect_entry.get()
