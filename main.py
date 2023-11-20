@@ -45,6 +45,7 @@ class GraphFrame(customtkinter.CTkFrame):
         self.vertices = {}
         self.edges = []
         self.label1.configure(text=self.graph)
+        self.label2.configure(text=self.color_map)
 
     def add_vertex(self, event, connect_entry, connect_with_entry):
         vertex_name = chr(65 + len(self.graph))  # преобразуем номер вершины в символ латинского алфавита
@@ -149,16 +150,16 @@ class App(customtkinter.CTk):
         self.my_frame.colorize()
 
     def clear_btn_click(self):
+        self.connect_entry.configure(values=[""])
+        self.connect_with_entry.configure(values=[""])
         self.my_frame.clear_field()
 
 
 def greedy_coloring(graph):
-    def get_neighbors(vertex, graph):
-        return graph[vertex]
 
     def get_color(vertex, color_map, graph):
         used_colors = set()
-        for neighbor in get_neighbors(vertex, graph):
+        for neighbor in graph[vertex]:
             if neighbor in color_map:
                 used_colors.add(color_map[neighbor])
         for color in range(len(graph)):
